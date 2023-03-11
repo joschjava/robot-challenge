@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Robot Controller</title>
+</head>
+<body>
+    <div th:if="${position}" th:text="${position}"></div>
+
+    <table>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+
+    <form action="/input" method="POST">
+        <textarea th:text="${defaultText}" name="textInput"></textarea>
+        <input type="submit" />
+    </form>
+
+</body>
+</html>
