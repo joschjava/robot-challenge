@@ -6,11 +6,11 @@ let interval;
 
 function startAnimation() {
     historyCount = 0;
+    SetNextPosition();
     interval = setInterval(SetNextPosition, 1100);
 }
 
 function SetNextPosition() {
-    console.log(historyCount);
     if (myGameInstance != null) {
         myGameInstance.SendMessage('rover', 'SetPosition', history[historyCount++]);
     }
@@ -21,7 +21,9 @@ function SetNextPosition() {
 }
 
 function SendCommands() {
-    let commandInput = document.getElementById('textInput').textContent;
+    let commandInput = document.getElementById('textInput').value;
+    let errorTextDOM = document.getElementById("error-text");
+    errorTextDOM.innerText = "";
     fetch("http://localhost:8080/input", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -29,13 +31,24 @@ function SendCommands() {
         "body": "textInput=" + encodeURI(commandInput),
         "method": "POST",
     }).then(res => {
-        if (!res.ok) {
-            throw new Error('Error fetching data');
+        if (res.ok) {
+            return res.text()
         }
-        return res.text()
+        let message;
+        if(res.status === 400){
+            message = 'Command is empty or leads robot out of boundaries';
+        } else {
+            message = 'Unknown Error sending data, check your satellites';
+        }
+        errorTextDOM.innerText = message;
+        throw new Error(message);
     }).then(data => {
-        history = data.split('$');
-        startAnimation();
+        if (typeof data === 'string') {
+            history = data.split('$');
+            startAnimation();
+        } else {
+            throw new Error('Invalid data format received');
+        }
     });
 }
 

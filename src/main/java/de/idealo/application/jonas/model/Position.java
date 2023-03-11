@@ -60,4 +60,8 @@ public class Position {
         return String.join(";", String.valueOf(x), String.valueOf(y), rotation.toString());
     }
 
+    public Position clone(){
+        return new Position(x,y,rotation);
+    }
+
 }

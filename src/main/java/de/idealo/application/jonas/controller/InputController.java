@@ -3,6 +3,7 @@ package de.idealo.application.jonas.controller;
 import de.idealo.application.jonas.model.Position;
 import de.idealo.application.jonas.service.RobotService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +18,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class InputController {
 
-    //TODO favicon?
-
     RobotService robotService;
 
     @PostMapping(path = "/input") //TODO think about name
-    public @ResponseBody String postTextInput(@RequestParam String textInput, Model model) {
-        Position finalPosition = robotService.processInput(textInput);
-        String history = robotService.getHistoryInUnityFormat();
-//        model.addAttribute("finalPosition", finalPosition);
-//        model.addAttribute("history", history);
-        addDefaultText(model);
-        return history;
+    public @ResponseBody ResponseEntity<String> postTextInput(@RequestParam String textInput) {
+        boolean success = robotService.processInput(textInput);
+        if(success) {
+            String history = robotService.getHistoryInUnityFormat();
+            return ResponseEntity.ok(history);
+        } else {
+            return ResponseEntity.badRequest().body("Input is empty or rover would drive outside the boundaries");
+        }
     }
 
     @GetMapping(path = "/")

@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | RobotRenderer</title>
+    <title>Team SSO's Rover Challenge</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
         <link rel="stylesheet" href="TemplateData/style.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-    <script th:src="@{page_script.js}" type="module"></script>
+    <script th:src="@{unityinterface.js}" type="module"></script>
 </head>
 <body>
 <div id="unity-container" class="unity-desktop">
@@ -23,6 +23,7 @@
 <div id="input-container">
         <label for="textInput">Command Code</label><textarea th:text="${defaultText}" name="textInput"
                                                              id="textInput" class="commandinput" rows="10" ></textarea>
+    <p id="error-text" class = "error-text"></p>
     <input type="submit" id="commandButton" value="Send command" class="button">
 </div>
 <script src="unity_script.js" type="module"></script>

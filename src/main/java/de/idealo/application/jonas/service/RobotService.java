@@ -14,36 +14,41 @@ import static de.idealo.application.jonas.model.Position.Rotation;
 @Getter
 public class RobotService {
 
-    private enum Action {POSITION, FORWARD, WAIT, TURNAROUND, RIGHT}
+    private enum Action {POSITION, FORWARD, WAIT, TURNAROUND, RIGHT};
 
-    ;
+    private Position position = new Position(0,0, Rotation.EAST);
 
-    private Position position;
+    private final List<Position> history = new ArrayList<>();
 
-    private List<Position> history = new ArrayList<>();
-
-    public Position processInput(String input) {
-        position = new Position(0, 0, Rotation.EAST);
+    public boolean processInput(String input) {
+        Position backupPos = position.clone();
         history.clear();
-        history.add(position);
-        parseInput(input);
-        return position;
+        boolean success = parseInput(input);
+        if(!success){
+            position = backupPos;
+        }
+        return success;
     }
 
     public String getHistoryInUnityFormat() {
         return history.stream().map(Position::toUnityFormat).collect(Collectors.joining("$"));
     }
 
-    private void parseInput(String input) {
+    private boolean parseInput(String input) {
         if (input == null || input.isBlank()) {
-            return;
+            return false;
         }
-        String[] lines = input.replace("\r", "").split("\n"); //TODO Check if this is everywhere, and not that there is only \n somewhere
+        String[] lines = input.replace("\r", "").split("\n");
         for (String line : lines) {
             line = removeComment(line);
             position = parseLine(line);
+            if (position.getX() < 0 || position.getX() > 4
+                    || position.getY() < 0 || position.getY() > 4) {
+                return false;
+            }
             history.add(new Position(position.getX(), position.getY(), position.getRotation()));
         }
+        return true;
     }
 
     /**
