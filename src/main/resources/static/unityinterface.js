@@ -1,4 +1,4 @@
-import {myGameInstance} from "./unity_script.js";
+import {myGameInstance} from "./unityscript.js";
 
 let history;
 let historyCount = 0;
