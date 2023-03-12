@@ -1,6 +1,5 @@
 package de.idealo.application.jonas.controller;
 
-import de.idealo.application.jonas.model.Position;
 import de.idealo.application.jonas.service.RobotService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +10,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Controller
 @AllArgsConstructor
 public class InputController {
 
     RobotService robotService;
 
-    @PostMapping(path = "/input") //TODO think about name
+    /**
+     * Receives robot control text from the UI. Returns 400 if robot is out of boundaries or commands are empty
+     * @param textInput Robot commands
+     * @return If input is valid:<br>
+     *  - String of taken path of Robot in format X1;Y1;ROTATION$X2;Y2;ROTATION <br>
+     *  If input is invalid:<br>
+     *      *  Empty string with bad request status code (400)
+     */
+    @PostMapping(path = "/input")
     public @ResponseBody ResponseEntity<String> postTextInput(@RequestParam String textInput) {
         boolean success = robotService.processInput(textInput);
         if(success) {
@@ -31,18 +35,21 @@ public class InputController {
         }
     }
 
+    /**
+     * Handles request to main page
+     * @param model Injected by Thymleaf
+     * @return Html page
+     */
     @GetMapping(path = "/")
     public String mainPage(Model model) {
         addDefaultText(model);
         return "index";
     }
 
-    @GetMapping(path = "/legacy")
-    public String legacyMainPage(Model model) {
-        addDefaultText(model);
-        return "indexold";
-    }
-
+    /**
+     * Adds default text from the pdf to the model in attribute "defaultText"
+     * @param model Model including default text
+     */
     private void addDefaultText(Model model){
         model.addAttribute("defaultText", "POSITION 1 3 EAST //sets the initial position for the robot\n" +
                 "FORWARD 3 //lets the robot do 3 steps forward\n" +

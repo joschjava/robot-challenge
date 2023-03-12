@@ -1,7 +1,21 @@
-# What I would add
+# Team SSO Robot Challenge
+
+# TODO 
+- Git hub push Unity project
+
+## Unity Code
+To see the code generated for the robot view, see:
+https://github.com/TechspiredMinds/robot-challenge-view-unity
+
+The coding part is found under: Assets/scripts/
+
+
+# What I would do
 
 - More robust handling of text input (Frontend + Backend)
-- Flexible fitting to resolution
+- More flexible fitting to resolution
+- Refactoring of position and robot service -> Seperate classes
+- Put Default text into txt file
 
 ## CHECK BEFORE SUBMIT
 

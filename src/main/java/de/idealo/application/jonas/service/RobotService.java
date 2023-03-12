@@ -12,6 +12,10 @@ import static de.idealo.application.jonas.model.Position.Rotation;
 
 @Service
 @Getter
+/**
+ * RobotService provides a set of methods for processing and parsing robot commands
+ * and maintaining a record of the robot's movements.
+ */
 public class RobotService {
 
     private enum Action {POSITION, FORWARD, WAIT, TURNAROUND, RIGHT};
@@ -20,6 +24,11 @@ public class RobotService {
 
     private final List<Position> history = new ArrayList<>();
 
+    /**
+     * Processes the input from robot command.
+     * @param input
+     * @return true if robot command was inside of defined boundaries, false otherwise
+     */
     public boolean processInput(String input) {
         Position backupPos = position.clone();
         history.clear();
@@ -30,10 +39,20 @@ public class RobotService {
         return success;
     }
 
+    /**
+     * Returns a concatinated string of positions that can be read by unity script in the format
+     * X1;Y1;ROTATION1$X2;Y2;ROTATION2
+     * @return Concatinated string of robot positions for Unity
+     */
     public String getHistoryInUnityFormat() {
         return history.stream().map(Position::toUnityFormat).collect(Collectors.joining("$"));
     }
 
+    /**
+     * Parses the input from robot command string
+     * @param input Robot commmands
+     * @return true if position is in boundaries, false otherwise
+     */
     private boolean parseInput(String input) {
         if (input == null || input.isBlank()) {
             return false;
@@ -52,8 +71,7 @@ public class RobotService {
     }
 
     /**
-     * Removes comment from string
-     *
+     * Removes comment from robot command string
      * @param line The line to remove the comment from
      */
     private String removeComment(String line) {
@@ -64,7 +82,11 @@ public class RobotService {
         return line.trim();
     }
 
-
+    /**
+     * Parses a single string containing a robot command and returns robot
+     * @param line Robot command line
+     * @return New position after executing robot command
+     */
     private Position parseLine(String line) {
         String[] parameters = line.split(" ");
         Action action = Action.valueOf(parameters[0]); // TODO handle exception?
