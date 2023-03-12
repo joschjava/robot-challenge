@@ -89,7 +89,7 @@ public class RobotService {
      */
     private Position parseLine(String line) {
         String[] parameters = line.split(" ");
-        Action action = Action.valueOf(parameters[0]); // TODO handle exception?
+        Action action = Action.valueOf(parameters[0]);
         switch (action) {
             case POSITION -> {
                 int x = Integer.parseInt(parameters[1]);
@@ -98,7 +98,7 @@ public class RobotService {
                 return new Position(x, y, rotation);
             }
             case FORWARD -> {
-                int steps = Integer.parseInt(parameters[1]); // TODO handle exception
+                int steps = Integer.parseInt(parameters[1]);
                 position.forward(steps);
             }
             case WAIT -> position.waitNow();

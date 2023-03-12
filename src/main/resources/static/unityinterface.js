@@ -6,11 +6,11 @@ let interval;
 
 function startAnimation() {
     historyCount = 0;
-    SetNextPosition();
-    interval = setInterval(SetNextPosition, 1100);
+    setNextPosition();
+    interval = setInterval(setNextPosition, 1100);
 }
 
-function SetNextPosition() {
+function setNextPosition() {
     if (myGameInstance != null) {
         myGameInstance.SendMessage('rover', 'SetPosition', history[historyCount++]);
     }
@@ -20,7 +20,7 @@ function SetNextPosition() {
     }
 }
 
-function SendCommands() {
+function sendCommands() {
     let commandInput = document.getElementById('textInput').value;
     let errorTextDOM = document.getElementById("error-text");
     errorTextDOM.innerText = "";
@@ -52,4 +52,20 @@ function SendCommands() {
     });
 }
 
-document.getElementById("commandButton").addEventListener("click", SendCommands)
+function quickCommand(command){
+    document.getElementById("textInput").value = command;
+    sendCommands();
+}
+
+function initQuickCommandButton(buttonId){
+    document.getElementById(buttonId).addEventListener("click", function() {
+        quickCommand(this.value);
+    });
+}
+
+document.getElementById("commandButton").addEventListener("click", sendCommands)
+initQuickCommandButton("qc-forward");
+initQuickCommandButton("qc-right");
+initQuickCommandButton("qc-turnaround");
+initQuickCommandButton("qc-wait");
+initQuickCommandButton("qc-position");

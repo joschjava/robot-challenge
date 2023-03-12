@@ -50,7 +50,12 @@ body {
     color: #fff;
     background-color: #ffb659;
     box-shadow: 0 5px 0 #745453;
+    margin: 5px;
     transition: all 0.3s ease;
+}
+
+.quickcommand {
+    background-color: #febc9c;
 }
 
 .button:hover {
@@ -59,8 +64,13 @@ body {
     cursor: pointer;
 }
 
+#quickcommand-container {
+    width: 80%;
+}
+
 label {
     display: block;
+    margin-top: 5px;
     margin-bottom: 10px;
     font-size: 24px;
     font-weight: bold;
